@@ -5,8 +5,27 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
+/**
+ * Unit tests for the ComparableIntPriorityQueue class.
+ *
+ * Contains tests to verify the functionality of the priority queue,
+ * including adding elements, polling the highest-priority element,
+ * and removing specific elements. The tests also compare the behavior
+ * of ComparableIntPriorityQueue with the standard PriorityQueue from
+ * the Java Collections Framework.
+ */
 public class QueueTests {
 
+    /**
+     * Tests the functionality of the ComparableIntPriorityQueue implementation
+     * by comparing it with the standard Java PriorityQueue. This test evaluates
+     * the following operations:
+     *
+     * - Adding elements to both queues
+     * - Polling the highest-priority element from both queues
+     * - Removing specific elements from both queues
+     * - Converting the queue state to an array and displaying it
+     */
     @Test
     public void test() {
         ComparableIntPriorityQueue queue = new ComparableIntPriorityQueue(5);
