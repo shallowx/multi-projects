@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * The elements are ordered according to their natural ordering,
  * with the smallest integer being the highest priority.
  */
-public class ComparableIntPriorityQueue {
+public class CompleteIntPriorityQueue {
 
     /**
      * The internal array used to store the priority queue elements.
@@ -20,19 +20,19 @@ public class ComparableIntPriorityQueue {
      */
     private int size;
     /**
-     * The maximum number of elements that the ComparableIntPriorityQueue can hold.
+     * The maximum number of elements that the CompleteIntPriorityQueue can hold.
      */
     private int capacity;
 
     /**
-     * Constructor for creating a new ComparableIntPriorityQueue with a given capacity.
+     * Constructor for creating a new CompleteIntPriorityQueue with a given capacity.
      *
      * @param capacity the initial capacity of the priority queue; must be a positive number.
      * @throws IllegalArgumentException if the capacity is less than or equal to zero.
      */
-    public ComparableIntPriorityQueue(int capacity) {
+    public CompleteIntPriorityQueue(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("capacity must be a positive number");
+            throw new IllegalArgumentException("Capacity must be a positive number");
         }
 
         this.capacity = capacity;
@@ -65,7 +65,7 @@ public class ComparableIntPriorityQueue {
      */
     public int peek() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Comparable priority queue is empty");
+            throw new NoSuchElementException("Complete priority queue is empty");
         }
         return queue[0];
     }
@@ -78,7 +78,7 @@ public class ComparableIntPriorityQueue {
      */
     public int poll() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Comparable priority queue is empty");
+            throw new NoSuchElementException("Complete priority queue is empty");
         }
         int e = queue[0];
         queue[0] = queue[size - 1];
@@ -95,7 +95,7 @@ public class ComparableIntPriorityQueue {
      */
     public void remove(int e) {
         if (isEmpty()) {
-            throw new NoSuchElementException("Comparable priority queue is empty");
+            throw new NoSuchElementException("Complete priority queue is empty");
         }
 
         for (int i = size; i > 0; i--) {

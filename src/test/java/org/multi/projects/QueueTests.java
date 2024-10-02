@@ -28,7 +28,7 @@ public class QueueTests {
      */
     @Test
     public void test() {
-        ComparableIntPriorityQueue queue = new ComparableIntPriorityQueue(5);
+        CompleteIntPriorityQueue queue = new CompleteIntPriorityQueue(5);
         queue.offer(2);
         queue.offer(1);
         queue.offer(4);
