@@ -30,6 +30,24 @@ public class Node<T> {
     }
 
     /**
+     * Retrieves the element stored in this node.
+     *
+     * @return the element stored in this node
+     */
+    public T getElemet() {
+        return elemet;
+    }
+
+    /**
+     * Sets the value of the element stored in this node.
+     *
+     * @param elemet The element to be stored in this node.
+     */
+    public void setElemet(T elemet) {
+        this.elemet = elemet;
+    }
+
+    /**
      * Retrieves the left child of this node.
      *
      * @return the left child of this node, or null if there is no left child
