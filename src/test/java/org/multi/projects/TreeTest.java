@@ -126,7 +126,7 @@ public class TreeTest {
         Integer[] preDfs = tree.preDfs(Integer.class);
         System.out.println(Arrays.toString(preDfs));
 
-        Integer[] midDfs = tree.midDfs(Integer.class);
+        Integer[] midDfs = tree.inDfs(Integer.class);
         System.out.println(Arrays.toString(midDfs));
 
         Integer[] suffixDfs = tree.suffixDfs(Integer.class);

@@ -192,7 +192,7 @@ public class CompleteBinaryTree<T> {
      * @param clz The class type of the elements in the binary tree.
      * @return An array of elements in the binary tree following in-order DFS sequence.
      */
-    public T[] midDfs(Class<T> clz) {
+    public T[] inDfs(Class<T> clz) {
         List<T> elements = new ArrayList<>();
         if (root == null) {
             return elements.toArray((T[]) Array.newInstance(clz, 0));
