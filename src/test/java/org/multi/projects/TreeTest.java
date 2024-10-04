@@ -2,10 +2,7 @@ package org.multi.projects;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * A test class to verify the functionalities of a CompleteBinaryTree data structure.
