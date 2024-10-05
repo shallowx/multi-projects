@@ -22,14 +22,14 @@ public class TreeTest {
      */
     @Test
     public void testTreeOffer() {
-        Node<Integer> root = new Node<>(1);
-        Node<Integer> left = new Node<>(2);
-        Node<Integer> right = new Node<>(3);
-        Node<Integer> leftLeft = new Node<>(4);
-        Node<Integer> leftRight = new Node<>(5);
-        Node<Integer> unknown = new Node<>(6);
-        Node<Integer> unknown0 = new Node<>(7);
-        Node<Integer> unknown00 = new Node<>(8);
+        TreeNode<Integer> root = new TreeNode<>(1);
+        TreeNode<Integer> left = new TreeNode<>(2);
+        TreeNode<Integer> right = new TreeNode<>(3);
+        TreeNode<Integer> leftLeft = new TreeNode<>(4);
+        TreeNode<Integer> leftRight = new TreeNode<>(5);
+        TreeNode<Integer> unknown = new TreeNode<>(6);
+        TreeNode<Integer> unknown0 = new TreeNode<>(7);
+        TreeNode<Integer> unknown00 = new TreeNode<>(8);
 
         CompleteBinaryTree<Integer> tree = new CompleteBinaryTree<>(root);
         tree.offer(left);
@@ -57,14 +57,14 @@ public class TreeTest {
      */
     @Test
     public void testTreeBfs() {
-        Node<Integer> root = new Node<>(1);
-        Node<Integer> left = new Node<>(2);
-        Node<Integer> right = new Node<>(3);
-        Node<Integer> leftLeft = new Node<>(4);
-        Node<Integer> leftRight = new Node<>(5);
-        Node<Integer> unknown = new Node<>(6);
-        Node<Integer> unknown0 = new Node<>(7);
-        Node<Integer> unknown00 = new Node<>(8);
+        TreeNode<Integer> root = new TreeNode<>(1);
+        TreeNode<Integer> left = new TreeNode<>(2);
+        TreeNode<Integer> right = new TreeNode<>(3);
+        TreeNode<Integer> leftLeft = new TreeNode<>(4);
+        TreeNode<Integer> leftRight = new TreeNode<>(5);
+        TreeNode<Integer> unknown = new TreeNode<>(6);
+        TreeNode<Integer> unknown0 = new TreeNode<>(7);
+        TreeNode<Integer> unknown00 = new TreeNode<>(8);
 
         CompleteBinaryTree<Integer> tree = new CompleteBinaryTree<>(root);
         tree.offer(left);
@@ -98,14 +98,14 @@ public class TreeTest {
      */
     @Test
     public void testTreeDfs() {
-        Node<Integer> root = new Node<>(1);
-        Node<Integer> left = new Node<>(2);
-        Node<Integer> right = new Node<>(3);
-        Node<Integer> leftLeft = new Node<>(4);
-        Node<Integer> leftRight = new Node<>(5);
-        Node<Integer> unknown = new Node<>(6);
-        Node<Integer> unknown0 = new Node<>(7);
-        Node<Integer> unknown00 = new Node<>(8);
+        TreeNode<Integer> root = new TreeNode<>(1);
+        TreeNode<Integer> left = new TreeNode<>(2);
+        TreeNode<Integer> right = new TreeNode<>(3);
+        TreeNode<Integer> leftLeft = new TreeNode<>(4);
+        TreeNode<Integer> leftRight = new TreeNode<>(5);
+        TreeNode<Integer> unknown = new TreeNode<>(6);
+        TreeNode<Integer> unknown0 = new TreeNode<>(7);
+        TreeNode<Integer> unknown00 = new TreeNode<>(8);
 
         CompleteBinaryTree<Integer> tree = new CompleteBinaryTree<>(root);
         tree.offer(left);

@@ -15,14 +15,14 @@ public class CompleteBinaryTree<T> {
     /**
      * The root node of this complete binary tree.
      */
-    private final Node<T> root;
+    private final TreeNode<T> root;
 
     /**
      * Constructs a CompleteBinaryTree with the specified root node.
      *
      * @param root the root node of the tree
      */
-    public CompleteBinaryTree(Node<T> root) {
+    public CompleteBinaryTree(TreeNode<T> root) {
         this.root = root;
     }
 
@@ -34,13 +34,13 @@ public class CompleteBinaryTree<T> {
      * @return true if the binary tree is complete, false otherwise
      */
     public boolean isComplete() {
-        ArrayDeque<Node<T>> nodes = new ArrayDeque<>();
+        ArrayDeque<TreeNode<T>> nodes = new ArrayDeque<>();
         nodes.add(root);
         boolean isComplete = false;
         while (!nodes.isEmpty()) {
-            Node<T> node = nodes.poll();
-            Node<T> left = node.getLeft();
-            Node<T> right = node.getRight();
+            TreeNode<T> node = nodes.poll();
+            TreeNode<T> left = node.getLeft();
+            TreeNode<T> right = node.getRight();
             if (left != null) {
                 if (isComplete) {
                     return false;
@@ -69,17 +69,17 @@ public class CompleteBinaryTree<T> {
      * @param node The node to be added to the tree. The node must not be null.
      * @throws NullPointerException If the provided node is null.
      */
-    public void offer(Node<T> node) {
+    public void offer(TreeNode<T> node) {
         if (node == null) {
             throw new NullPointerException("Not allowed to be null");
         }
 
-        ArrayDeque<Node<T>> nodes = new ArrayDeque<>();
+        ArrayDeque<TreeNode<T>> nodes = new ArrayDeque<>();
         nodes.add(root);
         while (!nodes.isEmpty()) {
-            Node<T> current = nodes.poll();
-            Node<T> left = current.getLeft();
-            Node<T> right = current.getRight();
+            TreeNode<T> current = nodes.poll();
+            TreeNode<T> left = current.getLeft();
+            TreeNode<T> right = current.getRight();
             if (left == null) {
                 current.setLeft(node);
                 break;
@@ -108,14 +108,14 @@ public class CompleteBinaryTree<T> {
         if (root == null) {
             return elements.toArray((T[]) Array.newInstance(clz, 0));
         }
-        ArrayDeque<Node<T>> nodes = new ArrayDeque<>();
+        ArrayDeque<TreeNode<T>> nodes = new ArrayDeque<>();
         nodes.add(root);
         while (!nodes.isEmpty()) {
-            Node<T> current = nodes.poll();
+            TreeNode<T> current = nodes.poll();
             elements.add(current.getElemet());
 
-            Node<T> left = current.getLeft();
-            Node<T> right = current.getRight();
+            TreeNode<T> left = current.getLeft();
+            TreeNode<T> right = current.getRight();
             if (left != null) {
                 nodes.offer(left);
             }
@@ -148,7 +148,7 @@ public class CompleteBinaryTree<T> {
      * @param node     The current node being visited in the binary tree.
      * @param elements The list where the elements of the visited nodes are collected.
      */
-    private void preDfs(Node<T> node, List<T> elements) {
+    private void preDfs(TreeNode<T> node, List<T> elements) {
         if (node == null) {
             return;
         }
@@ -169,10 +169,10 @@ public class CompleteBinaryTree<T> {
         if (root == null) {
             return elements.toArray((T[]) Array.newInstance(clz, 0));
         }
-        Stack<Node<T>> nodes = new Stack<>();
+        Stack<TreeNode<T>> nodes = new Stack<>();
         nodes.push(root);
         while (!nodes.isEmpty()) {
-            Node<T> current = nodes.pop();
+            TreeNode<T> current = nodes.pop();
             elements.add(current.getElemet());
             if (current.getRight() != null) {
                 nodes.push(current.getRight());
@@ -197,8 +197,8 @@ public class CompleteBinaryTree<T> {
         if (root == null) {
             return elements.toArray((T[]) Array.newInstance(clz, 0));
         }
-        Stack<Node<T>> nodes = new Stack<>();
-        Node<T> current = root;
+        Stack<TreeNode<T>> nodes = new Stack<>();
+        TreeNode<T> current = root;
         while (current != null || !nodes.isEmpty()) {
             while (current != null) {
                 nodes.push(current);
@@ -224,10 +224,10 @@ public class CompleteBinaryTree<T> {
         if (root == null) {
             return elements.toArray((T[]) Array.newInstance(clz, 0));
         }
-        Stack<Node<T>> nodes = new Stack<>();
+        Stack<TreeNode<T>> nodes = new Stack<>();
         nodes.push(root);
         while (!nodes.isEmpty()) {
-            Node<T> current = nodes.pop();
+            TreeNode<T> current = nodes.pop();
             elements.add(current.getElemet());
 
             if (current.getLeft() != null) {

@@ -5,7 +5,7 @@ package org.multi.projects;
  *
  * @param <T> The type of the element stored in the node.
  */
-public class Node<T> {
+public class TreeNode<T> {
     /**
      * The element stored in this node of the binary tree.
      */
@@ -14,18 +14,18 @@ public class Node<T> {
      * The left child node in a binary tree. It refers to the subtree
      * rooted at this child node.
      */
-    private Node<T> left;
+    private TreeNode<T> left;
     /**
      * The right child node in the binary tree.
      */
-    private Node<T> right;
+    private TreeNode<T> right;
 
     /**
      * Constructs a Node with the specified element.
      *
      * @param elemet The element to be stored in the node.
      */
-    public Node(T elemet) {
+    public TreeNode(T elemet) {
         this.elemet = elemet;
     }
 
@@ -52,7 +52,7 @@ public class Node<T> {
      *
      * @return the left child of this node, or null if there is no left child
      */
-    public Node<T> getLeft() {
+    public TreeNode<T> getLeft() {
         return left;
     }
 
@@ -61,7 +61,7 @@ public class Node<T> {
      *
      * @param left the node to be set as the left child
      */
-    public void setLeft(Node<T> left) {
+    public void setLeft(TreeNode<T> left) {
         this.left = left;
     }
 
@@ -70,7 +70,7 @@ public class Node<T> {
      *
      * @return the right child of the node, or null if there is no right child
      */
-    public Node<T> getRight() {
+    public TreeNode<T> getRight() {
         return right;
     }
 
@@ -79,7 +79,7 @@ public class Node<T> {
      *
      * @param right The right child node to be set.
      */
-    public void setRight(Node<T> right) {
+    public void setRight(TreeNode<T> right) {
         this.right = right;
     }
 }
