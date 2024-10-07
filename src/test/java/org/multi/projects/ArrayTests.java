@@ -12,6 +12,28 @@ import java.util.List;
  * such as adding, removing, and inserting elements, as well as retrieving the internal array state.
  */
 public class ArrayTests {
+
+    /**
+     * Tests the initialization and traversal of a two-dimensional array.
+     * <p>
+     * The method initializes a 3x3 integer array with predefined values.
+     * It then iterates over the array, printing each element to the standard output.
+     */
+    @Test
+    public void testDimensionalArrayInit() {
+        int[][] arr = {
+                {1,2,3},
+                {4,5,6},
+                {7,8,9}
+        };
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                System.out.println(arr[i][j]);
+            }
+        }
+    }
+
     /**
      * Tests the functionality of the IdentityArray class.
      * This test includes adding elements, inserting an element at a specific index,
@@ -154,11 +176,12 @@ public class ArrayTests {
         int[] prices = {2, 3, 8, 7, 1, 5, 3};
         int minPrice = prices[0];
         int maxProfit = 0;
-        for (int i = 0; i < prices.length; i++) {
+        for (int i = 1; i < prices.length; i++) {
             int potentialProfit = prices[i] - minPrice;
             maxProfit = Math.max(maxProfit, potentialProfit);
             minPrice = Math.min(minPrice, prices[i]);
         }
+        System.out.println(maxProfit);
     }
 
     /**
@@ -178,5 +201,42 @@ public class ArrayTests {
         }
         int expectedSum = (arr.length * (arr.length + 1)) >> 1;
         System.out.println(expectedSum - sum);
+    }
+
+    /**
+     * Tests the winner determination logic in an array.
+     *
+     * This method identifies the 'winner' in an array of integers. A 'winner' is defined as the largest
+     * integer in the array at the point when it has consecutively "won" a number of times equal to 'k'.
+     * The method iterates through the array, comparing the current maximum element found so far
+     * with the next elements in the array. It keeps count of how many times the maximum element
+     * "wins" consecutively. When the count reaches 'k', it prints out the index and value of the
+     * winner in an array format.
+     *
+     * The predefined array used for this test is {1, 2, 9, 6, 3, 7, 8} and the consecutive win count 'k' is set to 3.
+     */
+    @Test
+    public void testWinner() {
+        int[] arr = {1, 2, 9, 6, 3, 7, 8};
+        int k = 3, count = 0;
+        int max = arr[0];
+        int[] ret = new int[2];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                count = 1;
+
+                ret[0] = i;
+                ret[1] = max;
+            } else {
+                count++;
+            }
+
+            if (count == k) {
+                System.out.println(Arrays.toString(ret));
+                return;
+            }
+        }
+        System.out.println(Arrays.toString(ret));
     }
 }
