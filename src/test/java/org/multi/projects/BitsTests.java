@@ -92,6 +92,20 @@ public class BitsTests {
         System.out.println(count);
     }
 
+
+    // num & ((~num) + 1)  get the right value is '1'
+    @Test
+    public void testCountBits01() {
+        int num = 5;
+        int count = 0;
+        while (num != 0) {
+            int n = num & ((~num) + 1);
+            count++;
+            num ^= n;
+        }
+        System.out.println(count);
+    }
+
     /**
      * Tests the least significant bit (LSB) operation on an integer.
      *

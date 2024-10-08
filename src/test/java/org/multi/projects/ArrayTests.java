@@ -239,4 +239,48 @@ public class ArrayTests {
         }
         System.out.println(Arrays.toString(ret));
     }
+
+    /**
+     * Tests the calculation of the maximum and minimum values in an array.
+     *
+     * This method initializes an array of integers with predefined values and then iterates
+     * through the array to find the maximum and minimum values. It updates the maximum and
+     * minimum values based on a comparison with each element in the array.
+     *
+     * The identified maximum and minimum values are printed to the standard output.
+     */
+    @Test
+    public void testMaxAndMin() {
+        int[] arr = {1, 2, 9, 6, 3, 7, 8, 0, 11};
+        int max = arr[0];
+        int min = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        System.out.println(min + " " + max);
+    }
+
+    /**
+     * Tests the reversal of an integer array.
+     *
+     * This method reverses the elements of a predefined integer array
+     * in place using the XOR swapping technique.
+     * The reversed array is then printed to the standard output.
+     */
+    @Test
+    public void reverse() {
+        int[] arr = {1, 2, 9, 6, 3, 7, 8, 0, 11};
+        for (int i = 0; i < arr.length / 2; i++) {
+            arr[i] = arr[arr.length - i - 1] ^ arr[i];
+            arr[arr.length - i - 1] = arr[arr.length - i - 1] ^ arr[i];
+            arr[i] = arr[arr.length - i - 1] ^ arr[i];
+        }
+        System.out.println(Arrays.toString(arr));
+    }
 }
