@@ -1,4 +1,4 @@
-package org.multi.projects;
+package org.multi.projects.other;
 
 import java.lang.reflect.Array;
 import java.util.*;

@@ -1,4 +1,4 @@
-package org.multi.projects;
+package org.multi.projects.other;
 
 /**
  * Represents a node in a binary tree.
