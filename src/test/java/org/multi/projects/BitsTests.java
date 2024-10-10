@@ -28,8 +28,8 @@ public class BitsTests {
         num |= (1 << 1);
         System.out.println(String.format("%32s", Integer.toBinaryString(num)).replace(' ', '0'));
 
-        // clear bits
-        num &= ~(1 << 1);
+        // unset or clear thr N-th position bits
+        num = num & (~(1 << 1));
         System.out.println(String.format("%32s", Integer.toBinaryString(num)).replace(' ', '0'));
 
         // change bits
@@ -92,7 +92,31 @@ public class BitsTests {
         System.out.println(count);
     }
 
+    public static int findSingle(int[] arr) {
+        int ones = 0, twos = 0;
 
+        for (int num : arr) {
+            twos |= (ones & num);
+            ones ^= num;
+            int threes = ones & twos;
+            ones &= ~threes;
+            twos &= ~threes;
+        }
+        return ones;
+    }
+
+    @Test
+    public void test10() {
+        int xor = 52 ^ 4;
+        if(xor == 0) {
+            System.out.println(-1);
+            return;
+        }
+
+        int pos = xor & ((~xor) + 1);
+        int i = (int)(Math.log(pos) / Math.log(2)) + 1;
+        System.out.println(i);
+    }
     // num & ((~num) + 1)  get the right value is '1'
     @Test
     public void testCountBits01() {
@@ -104,6 +128,21 @@ public class BitsTests {
             num ^= n;
         }
         System.out.println(count);
+    }
+
+    @Test
+    public void testCountSetBit(){
+        int n = 12;
+        int pos = 0;
+        while ( n != 0) {
+            int bits = n & ((~n) + 1);
+            if (bits != 0) {
+                pos = bits;
+                break;
+            }
+            n ^= bits;
+        }
+        System.out.println((int)(Math.log(pos) / Math.log(2)) + 1);
     }
 
     /**
