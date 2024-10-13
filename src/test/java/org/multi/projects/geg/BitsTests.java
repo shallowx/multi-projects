@@ -2,6 +2,7 @@ package org.multi.projects.geg;
 
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
+import java.util.Random;
 
 public class BitsTests {
 
@@ -82,5 +83,18 @@ public class BitsTests {
             x >>= 1;
         }
         System.out.println(reversed);
+    }
+
+    @Test
+    public void test0x01() {
+        int a = 2;
+        System.out.println((~a) + 1);
+
+        int b = -2;
+        System.out.println((~b) + 1);
+
+        int c = Integer.MIN_VALUE;
+        System.out.println(c);
+        System.out.println((~c) + 1);
     }
 }
