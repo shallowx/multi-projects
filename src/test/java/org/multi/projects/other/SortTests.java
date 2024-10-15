@@ -79,4 +79,59 @@ public class SortTests {
         System.out.println(a);
         System.out.println(b);
     }
+
+    @Test
+    public void test06() {
+        int[] arr = {13,5,4,6,1,9,10};
+        for (int i = 0; i < arr.length; i++) {
+            int x = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] > arr[x]) {
+                    x = j;
+                }
+            }
+            if (x != i) {
+                int temp = arr[i];
+                arr[i] = arr[x];
+                arr[x] = temp;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    public void test07() {
+        int[] arr = {13,5,4,6,1,9,10};
+        for (int i = 0; i < arr.length; i++) {
+            boolean isChanged = false;
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    isChanged = true;
+                }
+            }
+            if (!isChanged) {
+                break;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    public void test08() {
+        int[] arr = {13,5,4,6,1,9,10};
+        for (int i = 0; i < arr.length; i++) {
+            int min = arr[i];
+            int j = i - 1;
+            for (; j > 0 ; j--) {
+                if (arr[j] < min) {
+                    arr[j + 1] = arr[j];
+                }
+            }
+            arr[j + 1] = min;
+        }
+        System.out.println(Arrays.toString(arr));
+    }
 }
