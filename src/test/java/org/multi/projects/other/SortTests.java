@@ -134,4 +134,44 @@ public class SortTests {
         }
         System.out.println(Arrays.toString(arr));
     }
+
+    @Test
+    public void test09() {
+        int[] arr = {0,1,1,1,2,2,2,2,3,3,3,3,4,5};
+        int low = 0, high = arr.length - 1;
+        int target = 2;
+        int index = -1;
+        while (low < high) {
+            int mid = low + ((high - low) >> 1);
+            if (arr[mid] > target) {
+                high = mid - 1;
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                index = mid;
+                high = mid;
+            }
+        }
+        System.out.println(index);
+    }
+
+    @Test
+    public void test010() {
+        int[] arr = {0,0,1,2,2,2,2,3,3,3,3,3,4,5};
+        int low = 0, high = arr.length - 1;
+        int target = 3;
+        int index = -1;
+        while (low < high) {
+            int mid = low + ((high - low) >> 1);
+            if (arr[mid] > target) {
+                high = mid - 1;
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                index = mid;
+                low = mid;
+            }
+        }
+        System.out.println(index);
+    }
 }
