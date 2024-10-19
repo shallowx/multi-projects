@@ -184,6 +184,16 @@ public class BitsTests {
         System.out.println("Sum is " + addBitStrings(new StringBuilder(str1), new StringBuilder(str2)));
     }
 
+    @Test
+    public void test01() {
+        System.out.println((~3) + 1);
+        System.out.println((~-1) + 1);
+        System.out.println((~Integer.MAX_VALUE) + 1);
+        System.out.println(2 | 1);
+        System.out.println((4 & (3)));
+        System.out.println((2 & (1)));
+    }
+
     /**
      * Ensures two StringBuilder objects have equal length by padding the shorter one with leading zeros.
      *
