@@ -46,6 +46,15 @@ public class BitsTests {
     }
 
     @Test
+    public void testMath() {
+        System.out.println(nth(2,3));
+    }
+
+    private int nth (int a, int b) {
+        return (a + b - 1) / b;
+    }
+
+    @Test
     public void testSingleNumber()
     {
         int[] nums = {1,2,1,3,2,5};
