@@ -1,7 +1,6 @@
 package org.multi.projects.geg;
 
 import org.junit.jupiter.api.Test;
-
 import java.security.SecureRandom;
 
 public class GreedyTests {
@@ -19,6 +18,7 @@ public class GreedyTests {
         System.out.println(step);
     }
 
+    // O(n * amt)
     private int step(int[] coins, int amt) {
         int i = coins.length - 1;
         int step = 0;
