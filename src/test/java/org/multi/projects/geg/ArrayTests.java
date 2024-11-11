@@ -1,8 +1,6 @@
 package org.multi.projects.geg;
 
 import org.junit.jupiter.api.Test;
-
-import javax.imageio.ImageTranscoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
