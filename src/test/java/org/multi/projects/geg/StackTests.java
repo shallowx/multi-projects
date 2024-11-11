@@ -55,7 +55,6 @@ public class StackTests {
     static class Stack0 {
         private final Object[] items;
         private int length;
-        private int cur;
 
         public Stack0(Object[] item) {
             this.items = item;
@@ -67,13 +66,11 @@ public class StackTests {
 
         public void push(Object item) {
             items[length++] = item;
-            cur++;
         }
 
         public Object pop() {
             Object e = items[length];
             items[length--] = null;
-            cur--;
             return e;
         }
     }
