@@ -62,7 +62,7 @@ public class TreeTests {
 
         @Override
         public String toString() {
-            return "Node{" +
+            return this.getClass().getSimpleName() + '{' +
                     "item=" + item +
                     ", left=" + left +
                     ", right=" + right +
