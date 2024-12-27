@@ -7,6 +7,18 @@ import io.netty.channel.socket.SocketChannel;
 public class ServerProcessorDemo extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
+
+        /**
+         * ---------------------------------------------------
+         *                    channel pipline
+         * ---------------------------------------------------
+         *      -----------------------  ----------------------
+         *      channel handler context0  channel handler context1
+         *      -----------------------  ------------------------
+         *         channel handler0            channel handler1
+         *
+         * ---------------------------------------------------
+         */
         ChannelPipeline pipeline = ch.pipeline();
         // inbound seq: 1 -> 2 -> 3
         pipeline.addLast(new FirstChannelInboundHandler());
