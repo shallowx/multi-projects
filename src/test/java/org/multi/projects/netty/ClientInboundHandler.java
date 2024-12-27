@@ -51,11 +51,13 @@ public class ClientInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("[1]channelRead");
         if (msg instanceof ByteBuf) {
-            ByteBuf buf =  ((ByteBuf) msg).retainedDuplicate();
+            ByteBuf buf =  (ByteBuf) msg;
             int v = buf.readInt();
             System.out.println("[1]read bytes " + v);
+            buf.release();
+        } else {
+            super.channelRead(ctx, msg);
         }
-        super.channelRead(ctx, msg);
     }
 
     @Override

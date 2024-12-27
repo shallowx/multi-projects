@@ -24,54 +24,61 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]handlerAdded, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]handlerAdded, channel: %s%n", ctx.channel());
         super.handlerAdded(ctx);
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]handlerRemoved, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]handlerRemoved, channel: %s%n", ctx.channel());
         super.handlerRemoved(ctx);
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelRegistered, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelRegistered, channel: %s%n", ctx.channel());
         super.channelRegistered(ctx);
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelUnregistered, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelUnregistered, channel: %s%n", ctx.channel());
         super.channelUnregistered(ctx);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelActive, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelActive, channel: %s%n", ctx.channel());
         super.channelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelInactive, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelInactive, channel: %s%n", ctx.channel());
         super.channelInactive(ctx);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(String.format("[2-in]channelRead, channel: %s", ctx.channel()));
-        if (msg instanceof ByteBuf) {
-            ByteBuf buf = (ByteBuf) msg;
+        System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
+        if (msg instanceof ByteBuf buf) {
             int v = buf.readInt();
-            System.out.println(String.format("[2-in]channelRead, msg: %d", v));
+            System.out.printf("[2-in]channelRead, msg: %d%n", v);
 
             ByteBuf buf1 = Unpooled.directBuffer();
             buf1.writeInt(1000);
-            ChannelFuture channelFuture = ctx.writeAndFlush(buf1);
-       //     ctx.channel().writeAndFlush(buf1);
-            channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
 
+            // inbound execute by sequence  and outbound execute by reverse
+            // what are the difference between '[1]ctx.writeAndFlush' and '[2]channel.writeAndFlush':
+            // 1. pipline includes head and tail about the difference of the ctx and channel
+            // 2. 'ctx.writeAndFlush' find bound handler from current node to pre,such as pipline includes inbound(1 -> 2 -> 3) and outbound (1 -> 2 -> 3),
+            // and 'ctx.writeAndFlush' execute in 2, so find the 1 is matched outbound, so 'ctx.writeAndFlush' if in the inbound handler will not execute the outbound methods
+            // and 'ctx.writeAndFlush' execute in outbound 2, and it will execute outbound 1 but not execute outbound 3
+            // 3. 'channel.writeAndFlush' anywhere execute that find the outbound from the tail outbound, so all outbounds will execute
+
+            // ChannelFuture channelFuture = ctx.writeAndFlush(buf1);
+            ChannelFuture channelFuture = ctx.channel().writeAndFlush(buf1);
+            channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
                 @Override
                 public void operationComplete(Future<? super Void> future) throws Exception {
                     if (future.isSuccess()) {
@@ -87,25 +94,25 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelReadComplete, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelReadComplete, channel: %s%n", ctx.channel());
         super.channelReadComplete(ctx);
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println(String.format("[2-in]userEventTriggered, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]userEventTriggered, channel: %s%n", ctx.channel());
         super.userEventTriggered(ctx, evt);
     }
 
     @Override
     public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(String.format("[2-in]channelWritabilityChanged, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]channelWritabilityChanged, channel: %s%n", ctx.channel());
         super.channelWritabilityChanged(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println(String.format("[2-in]exceptionCaught, channel: %s", ctx.channel()));
+        System.out.printf("[2-in]exceptionCaught, channel: %s%n", ctx.channel());
         super.exceptionCaught(ctx, cause);
     }
 }
