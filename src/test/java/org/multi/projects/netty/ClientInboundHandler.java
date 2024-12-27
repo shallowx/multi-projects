@@ -5,10 +5,14 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 public class ClientInboundHandler extends ChannelInboundHandlerAdapter {
+
+    private static final AttributeKey<String> ATTR_KEY = AttributeKey.valueOf("key");
+
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         System.out.println("[1]channelRegistered");
@@ -38,6 +42,7 @@ public class ClientInboundHandler extends ChannelInboundHandlerAdapter {
                 }
             }
         });
+        ctx.channel().attr(ATTR_KEY).set(String.format("test-channel-attr, and address:%s", ctx.channel().remoteAddress()));
         ctx.writeAndFlush(buf.retain(), channelPromise);
         super.channelActive(ctx);
     }
@@ -50,6 +55,8 @@ public class ClientInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("[1]channelRead");
+        String kv = ctx.channel().attr(ATTR_KEY).get();
+        System.out.printf("[1]channelRead, attr-key:%s%n", kv);
         if (msg instanceof ByteBuf) {
             ByteBuf buf =  (ByteBuf) msg;
             int v = buf.readInt();

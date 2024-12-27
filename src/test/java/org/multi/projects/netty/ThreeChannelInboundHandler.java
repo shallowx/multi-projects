@@ -1,10 +1,12 @@
 package org.multi.projects.netty;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.AttributeKey;
 
 public class ThreeChannelInboundHandler extends ChannelInboundHandlerAdapter {
+
+    private static final AttributeKey<String> ATTR_KEY = AttributeKey.valueOf("key");
 
     @Override
     protected void ensureNotSharable() {
@@ -56,6 +58,8 @@ public class ThreeChannelInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        String v = ctx.channel().attr(ATTR_KEY).get();
+        System.out.printf("[3-in]channelRead, channel: %s%n, and attr-v:%s%n", ctx.channel(), v);
         super.channelRead(ctx, msg);
     }
 
