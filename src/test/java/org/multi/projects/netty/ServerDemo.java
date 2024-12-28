@@ -21,9 +21,7 @@ public class ServerDemo {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .handler(new LoggingHandler(LogLevel.DEBUG))
-                    .childHandler(new ServerProcessorDemo())
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)
-                    .childOption(ChannelOption.TCP_NODELAY, true);
+                    .childHandler(new ServerProcessorDemo());
 
             ChannelFuture closeFuture = bootstrap.bind(8888).addListener(new GenericFutureListener<Future<? super Void>>() {
                 @Override
