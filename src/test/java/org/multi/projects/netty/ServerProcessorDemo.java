@@ -9,6 +9,7 @@ public class ServerProcessorDemo extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
 
         /**
+         *                    channel instance
          * ---------------------------------------------------
          *                    channel pipline
          * ---------------------------------------------------
@@ -16,7 +17,6 @@ public class ServerProcessorDemo extends ChannelInitializer<SocketChannel> {
          *      channel handler context0  channel handler context1
          *      -----------------------  ------------------------
          *         channel handler0            channel handler1
-         *
          * ---------------------------------------------------
          */
         ChannelPipeline pipeline = ch.pipeline();
