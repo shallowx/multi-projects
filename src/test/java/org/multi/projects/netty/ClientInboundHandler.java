@@ -2,10 +2,12 @@ package org.multi.projects.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.util.AttributeKey;
+import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -27,23 +29,46 @@ public class ClientInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("[1]channelActive");
-        ByteBuf buf = Unpooled.directBuffer();
-        buf.writeInt(100);
-        ChannelPromise channelPromise = ctx.newPromise();
-        channelPromise.addListener(new GenericFutureListener<Future<? super Void>>() {
-            @Override
-            public void operationComplete(Future<? super Void> future) throws Exception {
-                if (future.isSuccess()) {
-                    System.out.println("[1]send success");
-                    buf.release();
-                } else {
-                    System.out.println("[1]send failed");
+        EventExecutor executor = ctx.channel().eventLoop();
+        if (executor.inEventLoop()) {
+            System.out.println("[1]channelActive");
+            ByteBuf buf = Unpooled.directBuffer();
+            buf.writeInt(100);
+            ChannelPromise channelPromise = ctx.newPromise();
+            channelPromise.addListener(new GenericFutureListener<Future<? super Void>>() {
+                @Override
+                public void operationComplete(Future<? super Void> future) throws Exception {
+                    if (future.isSuccess()) {
+                        System.out.println("[1]send success");
+                        buf.release();
+                    } else {
+                        System.out.println("[1]send failed");
+                    }
                 }
-            }
-        });
-        ctx.channel().attr(ATTR_KEY).set(String.format("test-channel-attr, and address:%s", ctx.channel().remoteAddress()));
-        ctx.writeAndFlush(buf.retain(), channelPromise);
+            });
+            ctx.channel().attr(ATTR_KEY).set(String.format("test-channel-attr, and address:%s", ctx.channel().remoteAddress()));
+            ctx.writeAndFlush(buf.retain(), channelPromise);
+        } else {
+            executor.execute(() ->{
+                System.out.println("[1]channelActive");
+                ByteBuf buf = Unpooled.directBuffer();
+                buf.writeInt(100);
+                ChannelPromise channelPromise = ctx.newPromise();
+                channelPromise.addListener(new GenericFutureListener<Future<? super Void>>() {
+                    @Override
+                    public void operationComplete(Future<? super Void> future) throws Exception {
+                        if (future.isSuccess()) {
+                            System.out.println("[1]send success");
+                            buf.release();
+                        } else {
+                            System.out.println("[1]send failed");
+                        }
+                    }
+                });
+                ctx.channel().attr(ATTR_KEY).set(String.format("test-channel-attr, and address:%s", ctx.channel().remoteAddress()));
+                ctx.writeAndFlush(buf.retain(), channelPromise);
+            });
+        }
         super.channelActive(ctx);
     }
 

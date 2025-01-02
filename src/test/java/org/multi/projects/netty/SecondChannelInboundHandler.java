@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.EventLoop;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -60,31 +61,72 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
-        if (msg instanceof ByteBuf buf) {
-            int v = buf.readInt();
-            System.out.printf("[2-in]channelRead, msg: %d%n", v);
+        EventLoop eventLoop = ctx.channel().eventLoop();
+        if (eventLoop.inEventLoop()) {
+            //for test
+            eventLoop.execute(() -> {
+                System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
+                if (msg instanceof ByteBuf buf) {
+                    int v = buf.readInt();
+                    System.out.printf("[2-in]channelRead, msg: %d%n", v);
 
-            ByteBuf buf1 = Unpooled.directBuffer();
-            buf1.writeInt(1000);
+                    ByteBuf buf1 = Unpooled.directBuffer();
+                    buf1.writeInt(1000);
 
-            // inbound execute by sequence  and outbound execute by reverse
-            // what are the difference between '[1]ctx.writeAndFlush' and '[2]channel.writeAndFlush':
-            // 1. pipline includes head and tail about the difference of the ctx and channel
-            // 2. 'ctx.writeAndFlush' find bound handler from current node to pre,such as pipline includes inbound(1 -> 2 -> 3) and outbound (1 -> 2 -> 3),
-            // and 'ctx.writeAndFlush' execute in 2, so find the 1 is matched outbound, so 'ctx.writeAndFlush' if in the inbound handler will not execute the outbound methods
-            // and 'ctx.writeAndFlush' execute in outbound 2, and it will execute outbound 1 but not execute outbound 3
-            // 3. 'channel.writeAndFlush' anywhere execute that find the outbound from the tail outbound, so all outbounds will execute
+                    // inbound execute by sequence  and outbound execute by reverse
+                    // what are the difference between '[1]ctx.writeAndFlush' and '[2]channel.writeAndFlush':
+                    // 1. pipline includes head and tail about the difference of the ctx and channel
+                    // 2. 'ctx.writeAndFlush' find bound handler from current node to pre,such as pipline includes inbound(1 -> 2 -> 3) and outbound (1 -> 2 -> 3),
+                    // and 'ctx.writeAndFlush' execute in 2, so find the 1 is matched outbound, so 'ctx.writeAndFlush' if in the inbound handler will not execute the outbound methods
+                    // and 'ctx.writeAndFlush' execute in outbound 2, and it will execute outbound 1 but not execute outbound 3
+                    // 3. 'channel.writeAndFlush' anywhere execute that find the outbound from the tail outbound, so all outbounds will execute
 
-            // ChannelFuture channelFuture = ctx.writeAndFlush(buf1);
-            ChannelFuture channelFuture = ctx.channel().writeAndFlush(buf1);
-            channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+                    // ChannelFuture channelFuture = ctx.writeAndFlush(buf1);
+                    ChannelFuture channelFuture = ctx.channel().writeAndFlush(buf1);
+                    channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+                        @Override
+                        public void operationComplete(Future<? super Void> future) throws Exception {
+                            if (future.isSuccess()) {
+                                System.out.println("Data written successfully!");
+                            } else {
+                                System.out.println("Data write failed!");
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            eventLoop.execute(new Runnable() {
                 @Override
-                public void operationComplete(Future<? super Void> future) throws Exception {
-                    if (future.isSuccess()) {
-                        System.out.println("Data written successfully!");
-                    } else {
-                        System.out.println("Data write failed!");
+                public void run() {
+                    System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
+                    if (msg instanceof ByteBuf buf) {
+                        int v = buf.readInt();
+                        System.out.printf("[2-in]channelRead, msg: %d%n", v);
+
+                        ByteBuf buf1 = Unpooled.directBuffer();
+                        buf1.writeInt(1000);
+
+                        // inbound execute by sequence  and outbound execute by reverse
+                        // what are the difference between '[1]ctx.writeAndFlush' and '[2]channel.writeAndFlush':
+                        // 1. pipline includes head and tail about the difference of the ctx and channel
+                        // 2. 'ctx.writeAndFlush' find bound handler from current node to pre,such as pipline includes inbound(1 -> 2 -> 3) and outbound (1 -> 2 -> 3),
+                        // and 'ctx.writeAndFlush' execute in 2, so find the 1 is matched outbound, so 'ctx.writeAndFlush' if in the inbound handler will not execute the outbound methods
+                        // and 'ctx.writeAndFlush' execute in outbound 2, and it will execute outbound 1 but not execute outbound 3
+                        // 3. 'channel.writeAndFlush' anywhere execute that find the outbound from the tail outbound, so all outbounds will execute
+
+                        // ChannelFuture channelFuture = ctx.writeAndFlush(buf1);
+                        ChannelFuture channelFuture = ctx.channel().writeAndFlush(buf1);
+                        channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+                            @Override
+                            public void operationComplete(Future<? super Void> future) throws Exception {
+                                if (future.isSuccess()) {
+                                    System.out.println("Data written successfully!");
+                                } else {
+                                    System.out.println("Data write failed!");
+                                }
+                            }
+                        });
                     }
                 }
             });

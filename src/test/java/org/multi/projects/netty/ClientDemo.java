@@ -29,7 +29,6 @@ public class ClientDemo {
            });
 
            bootstrap.connect("127.0.0.1", 8888).addListener(new GenericFutureListener<Future<? super Void>>() {
-
                @Override
                public void operationComplete(Future<? super Void> future) throws Exception {
                    if (future.isSuccess()) {
