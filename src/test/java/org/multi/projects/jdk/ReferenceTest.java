@@ -1,109 +1,86 @@
 package org.multi.projects.jdk;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.lang.ref.Cleaner;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.concurrent.ThreadFactory;
 
 public class ReferenceTest {
 
     @Test
-    public void testAtomicIntegerFieldUpdater() {
-        A a = new A(2);
-        System.out.println(a.getCount());
+    public void testWeakReference() {
+        WeakObject wo = new WeakObject("jimmy", 18);
+        ReferenceQueue<WeakObject> rq = new ReferenceQueue<>();
+        WeakReference<WeakObject> wr = new WeakReference<>(wo, rq);
+        System.out.printf("rq.poll()-before-gc: %s%n", rq.poll());
+        System.gc();
+        System.out.println(wr.get());
+        System.out.printf("rq.poll()-after-gc: %s%n", rq.poll());
 
-        a.setCount(10, Thread.currentThread().getName());
-        System.out.println(a.getCount());
-
-        CountDownLatch latch = new CountDownLatch(2);
-
-        Thread.Builder.OfPlatform platform = Thread.ofPlatform();
-        platform.daemon(true);
-        Thread pThread = platform.start(new Runnable() {
+        WeakObject wo1 = new WeakObject("jimmy", 18);
+        Cleaner cleaner = Cleaner.create(new ThreadFactory() {
             @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    a.setCount(i, Thread.currentThread().getName());
-                }
-                latch.countDown();
+            public Thread newThread(@NotNull Runnable r) {
+                return new Thread(r);
             }
         });
 
-        Thread.Builder.OfVirtual virtual = Thread.ofVirtual();
-        Thread vThread = virtual.start(new Runnable() {
+        final WeakObject finalWo = wo1;
+        cleaner.register(wo1, new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 10; i++) {
-                    a.setCount(i + 10, virtual.toString());
-                }
-                latch.countDown();
+                System.out.printf("clean object: %s", finalWo);
             }
         });
-        System.out.printf("v-thread: %s", vThread);
 
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            if (!Thread.interrupted()) {
-                Thread.currentThread().interrupt();
-            }
-
-            if (!pThread.isInterrupted()) {
-                pThread.interrupt();
-            }
-
-            if (vThread.isInterrupted()) {
-                vThread.interrupt();
-            }
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(a.getCount());
+        ReferenceQueue<WeakObject> rq2 = new ReferenceQueue<>();
+        PhantomReference<WeakObject> pr = new PhantomReference<>(wo, rq2);
+        System.gc();
+        System.out.println(pr.get());
+        System.out.println(rq2.poll());
     }
 
-    @Test
-    public void testAtomicReferenceFieldUpdater() {
-        A a = new A(2);
-        System.out.println(a.getCount());
+    sealed class Common permits WeakObject {
+        private final String name;
 
-        B b = new B(a);
-        b.setA(new A(4));
-        System.out.println(b.getA().getCount());
-    }
-
-    static class A {
-
-        private static final AtomicIntegerFieldUpdater<A> UPDATER = AtomicIntegerFieldUpdater.newUpdater(A.class, "count");
-        private volatile int count;
-
-        public A(int count) {
-            this.count = count;
+        public Common(String name) {
+            this.name = name;
         }
 
-        public int getCount() {
-            return count;
+        public String getName() {
+            return name;
         }
 
-        public void setCount(int c, String name) {
-            if (UPDATER.compareAndSet(this, count, c)) {
-                System.out.printf("thread-name: %s, count-setting: %d%n", name, c);
-            }
+        @Override
+        public String toString() {
+            return "Common{" +
+                    "name='" + name + '\'' +
+                    '}';
         }
     }
 
-    static class B {
-        private static final AtomicReferenceFieldUpdater<B, A> UPDATER = AtomicReferenceFieldUpdater.newUpdater(B.class, A.class, "a");
+    non-sealed class WeakObject extends Common {
+        private final int age;
 
-        private volatile A a;
-        public B(A a) {
-            this.a = a;
+        public WeakObject(String name, int age) {
+            super(name);
+            this.age = age;
         }
-        public A getA() {
-            return a;
+
+        public int getAge() {
+            return age;
         }
-        public void setA(A a) {
-            UPDATER.compareAndSet(this, this.a, a);
+
+        @Override
+        public String toString() {
+            return "WeakObject{" +
+                    "age=" + age +
+                    ", name='" + super.name + '\'' +
+                    '}';
         }
     }
 }
