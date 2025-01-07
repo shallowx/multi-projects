@@ -7,6 +7,7 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 public class ByteBufferTest {
@@ -14,6 +15,9 @@ public class ByteBufferTest {
     @Test
     public void testByteBuffer() throws NoSuchFieldException, IllegalAccessException {
         ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+        buffer.order(ByteOrder.BIG_ENDIAN);
+        System.out.println(buffer.order());
+        System.out.println(ByteOrder.nativeOrder());
         buffer.put((byte) 1);
         buffer.put((byte) 2);
         buffer.put((byte) 3);
@@ -38,6 +42,7 @@ public class ByteBufferTest {
         System.out.println(intBuffer.get());
 
         ByteBuf byteBuf = Unpooled.directBuffer(1024);
+        byteBuf.order(ByteOrder.BIG_ENDIAN);
         byteBuf.writeByte(1);
         byteBuf.writeByte(2);
 

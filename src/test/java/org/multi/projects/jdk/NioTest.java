@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -54,6 +55,7 @@ public class NioTest {
                             "Hello, World!";
 
                     ByteBuffer responseBuffer = ByteBuffer.wrap(httpResponse.getBytes(StandardCharsets.UTF_8));
+                    responseBuffer.order(ByteOrder.BIG_ENDIAN);
                     clientChannel.write(responseBuffer);
                     clientChannel.close();
                 }
