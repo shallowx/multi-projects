@@ -57,7 +57,6 @@ public class NioTest {
                     ByteBuffer responseBuffer = ByteBuffer.wrap(httpResponse.getBytes(StandardCharsets.UTF_8));
                     responseBuffer.order(ByteOrder.BIG_ENDIAN);
                     clientChannel.write(responseBuffer);
-                    clientChannel.close();
                 }
             }
         }

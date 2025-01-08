@@ -40,6 +40,11 @@ public class ByteBufferTest {
         intBuffer.put(1);
         intBuffer.flip();
         System.out.println(intBuffer.get());
+        intBuffer.rewind();
+        intBuffer.put(2);
+        intBuffer.flip();
+        int t = intBuffer.get();
+        System.out.println(t);
 
         ByteBuf byteBuf = Unpooled.directBuffer(1024);
         byteBuf.order(ByteOrder.BIG_ENDIAN);
