@@ -9,6 +9,8 @@ import io.netty.channel.EventLoop;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.util.concurrent.CountDownLatch;
+
 public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
@@ -59,6 +61,8 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
         super.channelInactive(ctx);
     }
 
+    CountDownLatch latch = new CountDownLatch(1);
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         EventLoop eventLoop = ctx.channel().eventLoop();
@@ -66,9 +70,11 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
             //for test
             eventLoop.execute(() -> {
                 System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
-                if (msg instanceof ByteBuf buf) {
+                if (msg instanceof ByteBuf) {
+                    ByteBuf buf = ((ByteBuf) msg).retain();
                     int v = buf.readInt();
                     System.out.printf("[2-in]channelRead, msg: %d%n", v);
+                    buf.release();
 
                     ByteBuf buf1 = Unpooled.directBuffer();
                     buf1.writeInt(1000);
@@ -93,6 +99,7 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
                             }
                         }
                     });
+                    latch.countDown();
                 }
             });
         } else {
@@ -100,9 +107,11 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
                 @Override
                 public void run() {
                     System.out.printf("[2-in]channelRead, channel: %s%n", ctx.channel());
-                    if (msg instanceof ByteBuf buf) {
+                    if (msg instanceof ByteBuf) {
+                        ByteBuf buf = ((ByteBuf) msg).retain();
                         int v = buf.readInt();
                         System.out.printf("[2-in]channelRead, msg: %d%n", v);
+                        buf.release();
 
                         ByteBuf buf1 = Unpooled.directBuffer();
                         buf1.writeInt(1000);
@@ -127,10 +136,12 @@ public class SecondChannelInboundHandler extends ChannelInboundHandlerAdapter {
                                 }
                             }
                         });
+                        latch.countDown();
                     }
                 }
             });
         }
+        latch.await();
         super.channelRead(ctx, msg);
     }
 
