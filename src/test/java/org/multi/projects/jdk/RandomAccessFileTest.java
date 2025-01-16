@@ -3,9 +3,8 @@ package org.multi.projects.jdk;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+
+import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
@@ -68,5 +67,18 @@ public class RandomAccessFileTest {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    @Test
+    public void testTransfer() throws IOException {
+        RandomAccessFile access = new RandomAccessFile("access.txt", "rw");
+        access.writeInt(1);
+        access.writeUTF("hello world");
+        FileChannel channel = access.getChannel();
+
+        FileOutputStream out = new FileOutputStream("dst.txt");
+        FileChannel dstChannel = out.getChannel();
+        channel.transferTo(0, channel.size(), dstChannel);
+        access.close();
     }
 }
