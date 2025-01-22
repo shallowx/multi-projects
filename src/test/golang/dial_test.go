@@ -1,4 +1,4 @@
-package test
+package golang
 
 import (
 	"fmt"
