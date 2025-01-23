@@ -40,3 +40,27 @@ func receiveChan(c chan string) {
 		}
 	}()
 }
+
+func TestSignal(t *testing.T) {
+	signalWithChan()
+}
+
+func signalWithChan() {
+	c := make(chan int)
+	go func() {
+		for {
+			c <- 1
+			fmt.Println("write to chan")
+			time2.Sleep(2 * time2.Second)
+		}
+	}()
+
+	go func() {
+		for {
+			<-c
+			fmt.Println("receive from chan")
+		}
+	}()
+
+	select {}
+}
