@@ -14,7 +14,7 @@ public class SortTests {
         for (int i = 0; i < l - 1; i++) {
             for (int j = i + 1; j < l; j++) {
                 if (unsorted[i] > unsorted[j]) {
-                   swap(unsorted, i, j);
+                   swap(i, j);
                 }
             }
         }
@@ -33,15 +33,31 @@ public class SortTests {
             }
 
             if (minIndex != i) {
-                swap(unsorted, i, minIndex);
+                swap(i, minIndex);
             }
         }
         System.out.println(Arrays.toString(unsorted));
     }
 
-    private void swap(int[] arr, int i, int j) {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    @Test
+    public void sort2() {
+        int l = unsorted.length;
+        int i, j , k;
+        for (i = 1; i != l; ++i) {
+            j = i - 1;
+            k = unsorted[i];
+            while (j >= 0 && unsorted[j] > k) {
+                unsorted[j + 1] = unsorted[j];
+                j--;
+            }
+            unsorted[j + 1] = k;
+        }
+        System.out.println(Arrays.toString(unsorted));
+    }
+
+    private void swap(int i, int j) {
+        int temp = SortTests.unsorted[i];
+        SortTests.unsorted[i] = SortTests.unsorted[j];
+        SortTests.unsorted[j] = temp;
     }
 }
