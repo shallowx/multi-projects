@@ -18,6 +18,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.16")
     implementation("ch.qos.logback:logback-core:1.5.16")
     implementation("org.slf4j:slf4j-api:2.0.16")
+    // https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis
+    implementation("org.springframework.data:spring-data-redis:3.4.2")
 }
 
 tasks.test {
