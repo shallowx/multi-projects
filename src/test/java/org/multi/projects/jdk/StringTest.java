@@ -2,8 +2,8 @@ package org.multi.projects.jdk;
 
 import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StringTest {
 
@@ -122,5 +122,22 @@ public class StringTest {
         System.out.println((~Integer.MIN_VALUE) + 1);
         System.out.println((~0) + 1);
         System.out.println((~5) + 1);
+    }
+
+    @Test
+    public void test5() {
+        String str = "abcdefghijklmn";
+        String reversed = "";
+        for (int i = str.length() - 1; i >= 0 ; i--) {
+            reversed += str.charAt(i);
+        }
+        System.out.println(reversed);
+    }
+
+    @Test
+    public void test6() {
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        IntSummaryStatistics stats = list.stream().collect(Collectors.summarizingInt(i -> i));
+        System.out.println(stats.getMax());
     }
 }
