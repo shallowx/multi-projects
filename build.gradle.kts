@@ -14,7 +14,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.netty:netty-all:4.2.0.RC1")
+    implementation("io.netty:netty-all:4.2.0.Final")
     implementation("ch.qos.logback:logback-classic:1.5.16")
     implementation("ch.qos.logback:logback-core:1.5.16")
     implementation("org.slf4j:slf4j-api:2.0.16")
