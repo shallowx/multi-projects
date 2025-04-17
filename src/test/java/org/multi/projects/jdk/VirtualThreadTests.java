@@ -2,6 +2,8 @@ package org.multi.projects.jdk;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 public class VirtualThreadTests {
 
     @Test
@@ -15,5 +17,11 @@ public class VirtualThreadTests {
         });
         System.out.println(t.getState());
         System.out.println(Thread.currentThread().getState());
+    }
+
+    @Test
+    public void testOptional() {
+        Optional<Object> o = Optional.ofNullable(null);
+        System.out.println(o);
     }
 }
