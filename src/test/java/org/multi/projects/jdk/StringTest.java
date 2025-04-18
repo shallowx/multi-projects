@@ -1,5 +1,6 @@
 package org.multi.projects.jdk;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -139,5 +140,38 @@ public class StringTest {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         IntSummaryStatistics stats = list.stream().collect(Collectors.summarizingInt(i -> i));
         System.out.println(stats.getMax());
+    }
+
+    @Test
+    public void test7() {
+        String str = "abcdefghijklmn";
+        boolean ret0 = isTrue(str);
+        Assertions.assertFalse(ret0);
+
+        String str1 = "abcdeedcba";
+        boolean ret1 = isTrue(str1);
+        Assertions.assertTrue(ret1);
+
+        String str2 = "abcdedcba";
+        boolean ret2 = isTrue(str2);
+        Assertions.assertTrue(ret2);
+    }
+
+    private boolean isTrue(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+
+        char[] charArray = str.toCharArray();
+        int left = 0;
+        int right = charArray.length - 1;
+        boolean flag = true;
+        while (left < right) {
+            if (charArray[left++] != charArray[right--]) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 }
